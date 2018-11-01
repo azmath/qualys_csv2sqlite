@@ -22,4 +22,14 @@ for row in reader:
     #cutting off HH:SS:MM
     row['First Detected'] = datetime.datetime.strptime(temp2, "%m/%d/%Y").strftime("%Y-%m-%d")
     
-    
+    to_db = [row['IP'], row['DNS'], row['NETBIOS'], row['OS'], row['IP STATUS'], row['QID'], row['TITLE'], row['Type'], row['Severity'], 
+         row['Port'], row['Protocol'], row['First Detected'], row['CVE ID'], row['Vendor Reference'], row['CVSS'], row['Threat'], 
+         row['Impact'], row['Solution'], row['Exploitability'], row['Associated Malware'], row['Results'], row['Category'] ]
+    for x in range(0, 21):
+      if to_db[x] == "":
+        to_db[x] = unicode("0", "utf8")
+    cur.execute("insert into qualys (IP, DNS, Netbios, OS, IP_Status, QID, Title, Type, Severity, Port, Protocol, First_Detected, CVE_ID,
+            Vendor_ref, CVSS_base, Threat, Impact, Solution, Exploitable, Malware, Results, Category) Values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (to_db, ))
+  sqldb.commit()
+  sqldb.close()
+  
